@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "chicken-04-vertical.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

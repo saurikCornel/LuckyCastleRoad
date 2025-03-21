@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     let url: URL = .init(string: "https://luckycastleroad.top/play/")!
     var body: some View {
-        GameLoader_DCA97460Panel(ctrl: .init(url: url))
+        GameLoaderPanel(ctrl: .init(url: url))
             .background(Color(hex: "#27143a").ignoresSafeArea())
     }
 }

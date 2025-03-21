@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "gameplay-dash-line.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

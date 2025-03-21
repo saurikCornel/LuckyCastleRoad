@@ -3,12 +3,12 @@ import WebKit
 import Foundation
 
 class GameLoader_DCA97460Model: ObservableObject {
-    @Published var loadingState: GameLoader_DCA97460Loading = .idle
+    @Published var loadingState: GameLoader = .idle
     let url: URL
     private var webView: WKWebView?
     private var progressObservation: NSKeyValueObservation?
     private var currentProgress: Double = 0.0
-    private let stamp = "RAND_DCA97460_2218"
+   
     
     init(url: URL) {
         self.url = url
@@ -29,7 +29,7 @@ class GameLoader_DCA97460Model: ObservableObject {
         }
         let request = URLRequest(url: url, timeoutInterval: 15.0)
         debugPrint("Loading request for URL: \(url)")
-        let _ = "TOKEN_DCA97460_705"
+       
         DispatchQueue.main.async { [weak self] in
             self?.loadingState = .loading(progress: 0.0)
             self?.currentProgress = 0.0
@@ -62,18 +62,18 @@ class GameLoader_DCA97460Model: ObservableObject {
                 self?.loadingState = .noInternet
             }
         }
-        let _ = "KEY_DCA97460_40"
+       
     }
 }
 
-enum GameLoader_DCA97460Loading: Equatable {
+enum GameLoader: Equatable {
     case idle
     case loading(progress: Double)
     case loaded
     case failed(Error)
     case noInternet
     
-    static func == (lhs: GameLoader_DCA97460Loading, rhs: GameLoader_DCA97460Loading) -> Bool {
+    static func == (lhs: GameLoader, rhs: GameLoader) -> Bool {
         switch (lhs, rhs) {
         case (.idle, .idle), (.loaded, .loaded), (.noInternet, .noInternet):
             return true
@@ -87,7 +87,7 @@ enum GameLoader_DCA97460Loading: Equatable {
     }
 }
 
-struct GameLoader_DCA97460Renderer: UIViewRepresentable {
+struct GameLoaderRenderer: UIViewRepresentable {
     @ObservedObject var ctrl: GameLoader_DCA97460Model
     private let token = "TOKEN_DCA97460_705"
     
@@ -116,7 +116,6 @@ struct GameLoader_DCA97460Renderer: UIViewRepresentable {
         debugPrint("Renderer: \(ctrl.url)")
         view.navigationDelegate = context.coordinator
         ctrl.setWebView(view)
-        let _ = "KEY_DCA97460_40"
         return view
     }
     
@@ -136,16 +135,15 @@ struct GameLoader_DCA97460Renderer: UIViewRepresentable {
     }
     
     class WebControl: NSObject, WKNavigationDelegate {
-        let owner: GameLoader_DCA97460Renderer
+        let owner: GameLoaderRenderer
         var redirectFlag = false
-        private let key = "RAND_DCA97460_2218"
-        
-        init(owner: GameLoader_DCA97460Renderer) {
+      
+        init(owner: GameLoaderRenderer) {
             self.owner = owner
             debugPrint("Control init")
         }
         
-        private func updateState(_ state: GameLoader_DCA97460Loading) {
+        private func updateState(_ state: GameLoader) {
             DispatchQueue.main.async { [weak self] in
                 self?.owner.ctrl.loadingState = state
             }
@@ -186,9 +184,8 @@ struct GameLoader_DCA97460Renderer: UIViewRepresentable {
     }
 }
 
-struct GameLoader_DCA97460Panel: View {
+struct GameLoaderPanel: View {
     @StateObject var ctrl: GameLoader_DCA97460Model
-    private let stamp = "KEY_DCA97460_40"
     
     init(ctrl: GameLoader_DCA97460Model) {
         _ctrl = StateObject(wrappedValue: ctrl)
@@ -196,7 +193,7 @@ struct GameLoader_DCA97460Panel: View {
     
     var body: some View {
         ZStack {
-            GameLoader_DCA97460Renderer(ctrl: ctrl)
+            GameLoaderRenderer(ctrl: ctrl)
             .opacity(ctrl.loadingState == .loaded ? 1 : 0.5)
             if case .loading(let p) = ctrl.loadingState {
                 GeometryReader { geo in
