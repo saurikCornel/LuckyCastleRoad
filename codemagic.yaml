@@ -7,7 +7,7 @@ workflows:
           - certificate_credentials # <-- (CERTIFICATE_PRIVATE_KEY)
         vars:
           XCODE_PROJECT: "LuckyCastleRoad.xcodeproj"
-          XCODE_SCHEME: "project"
+          XCODE_SCHEME: "LuckyCastleRoad"
           BUNDLE_ID: "com.lckcastle.road"
           APP_STORE_APPLE_ID: 6743628434
         xcode: latest
