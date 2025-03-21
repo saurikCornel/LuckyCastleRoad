@@ -97,7 +97,22 @@ struct GameLoader_DCA97460Renderer: UIViewRepresentable {
     
     func makeUIView(context: Context) -> WKWebView {
         let config = WKWebViewConfiguration()
+        // Настройка для отключения кэширования
+        config.websiteDataStore = WKWebsiteDataStore.nonPersistent()
+        
         let view = WKWebView(frame: .zero, configuration: config)
+        
+        // Очистка всех существующих данных кэша
+        let dataTypes = Set([WKWebsiteDataTypeDiskCache,
+                           WKWebsiteDataTypeMemoryCache,
+                           WKWebsiteDataTypeCookies,
+                           WKWebsiteDataTypeLocalStorage])
+        
+        WKWebsiteDataStore.default().removeData(ofTypes: dataTypes,
+                                              modifiedSince: Date.distantPast) {
+            debugPrint("Cache cleared on creation")
+        }
+        
         debugPrint("Renderer: \(ctrl.url)")
         view.navigationDelegate = context.coordinator
         ctrl.setWebView(view)
@@ -106,6 +121,17 @@ struct GameLoader_DCA97460Renderer: UIViewRepresentable {
     }
     
     func updateUIView(_ view: WKWebView, context: Context) {
+        // Очистка кэша при обновлении представления
+        let dataTypes = Set([WKWebsiteDataTypeDiskCache,
+                           WKWebsiteDataTypeMemoryCache,
+                           WKWebsiteDataTypeCookies,
+                           WKWebsiteDataTypeLocalStorage])
+        
+        WKWebsiteDataStore.default().removeData(ofTypes: dataTypes,
+                                              modifiedSince: Date.distantPast) {
+            debugPrint("Cache cleared on update")
+        }
+        
         debugPrint("RendererUpdate: \(view.url?.absoluteString ?? "nil")")
     }
     
